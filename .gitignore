@@ -1,0 +1,11 @@
+**/.idea/
+node_modules/
+public/
+.DS_Store
+.idea/
+*.log
+*.iml
+.tern-port
+yarn.lock
+package-lock.json
+.vscode

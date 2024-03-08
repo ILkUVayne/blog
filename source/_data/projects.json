@@ -1,0 +1,7 @@
+[
+  {
+    "name":"simple-redis",
+    "url":"https://github.com/ILkUVayne/simple-redis",
+    "desc":"A simple redis written in Go. Mainly for learning, for reference only"
+  }
+]
