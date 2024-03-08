@@ -36,6 +36,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          push: true
           tags: ${{ github.sha }}
 
       # 让K8s应用deployment
