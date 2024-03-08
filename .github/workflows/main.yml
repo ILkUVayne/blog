@@ -42,15 +42,27 @@ jobs:
       # 让K8s应用deployment
       - run: |
           sed -i 's/{TAG}/${{ github.sha }}/g' deployment.yaml
+#      - name: deploy to cluster
+#        uses: steebchen/kubectl@master
+#        with:
+#          config: ${{ secrets.KUBE_CONFIG_DATA }}
+##          command: apply -f deployment.yaml
+##          command: set image --record deployment/blog container=${{ github.repository }}:${{ github.sha }}
+#          command: set image --record deployment/blog blog=${{ github.repository }}:${{ github.sha }}
+#      - name: verify deployment
+#        uses: steebchen/kubectl@master
+#        with:
+#          config: ${{ secrets.KUBE_CONFIG_DATA }}
+#          command: rollout status -n blog deployment/blog
       - name: deploy to cluster
-        uses: steebchen/kubectl@master
+        uses: steebchen/kubectl@v1
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-#          command: apply -f deployment.yaml
-#          command: set image --record deployment/blog container=${{ github.repository }}:${{ github.sha }}
-          command: set image --record deployment/blog blog=${{ github.repository }}:${{ github.sha }}
+          args: apply -f deployment.yaml
       - name: verify deployment
-        uses: steebchen/kubectl@master
+        uses: steebchen/kubectl@v1
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
-          config: ${{ secrets.KUBE_CONFIG_DATA }}
-          command: rollout status -n blog deployment/blog
+          args: '"rollout status -n blog deployment/blog"'
