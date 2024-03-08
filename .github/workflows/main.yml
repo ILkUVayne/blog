@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
 
       # node 编译
       - name: build
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
       - run: |
           npm i -g hexo-cli textlint textlint-rule-ja-space-between-half-and-full-width
           npm i -f
@@ -24,11 +26,11 @@ jobs:
 
       # docker build，并push
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
       - name: Build and push
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v5
         with:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
