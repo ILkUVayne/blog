@@ -32,7 +32,7 @@ jobs:
         with:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-          repository: xcy168126/holo_blog
+          repository: registry.cn-shanghai.aliyuncs.com/my_hb/my-blog
           tags: ${{ github.sha }}
 
       # 让K8s应用deployment
