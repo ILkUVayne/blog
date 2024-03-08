@@ -40,23 +40,19 @@ jobs:
           tags: registry.cn-shanghai.aliyuncs.com/my_hb/my-blog:${{ github.sha }}
 
       # 让K8s应用deployment
-      - name: sed
-        run: |
+      - run: |
           sed -i 's/{TAG}/${{ github.sha }}/g' deployment.yaml
-      - name: Configure K3s cluster or deploy apps
-        run: |  
-          kubectl apply -f deployment.yaml
-#      - name: deploy to cluster
-#        uses: steebchen/kubectl@master
-#        env:
-#          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#          KUBECTL_VERSION: "1.28"
-#        with:
-#          args: apply -f deployment.yaml
-#      - name: verify deployment
-#        uses: steebchen/kubectl@master
-#        env:
-#          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#          KUBECTL_VERSION: "1.28"
-#        with:
-#          args: '"rollout status -n blog deployment/blog"'
+      - name: deploy to cluster
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBECTL_VERSION: "1.28"
+        with:
+          args: apply -f deployment.yaml
+      - name: verify deployment
+        uses: steebchen/kubectl@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+          KUBECTL_VERSION: "1.28"
+        with:
+          args: '"rollout status -n blog deployment/blog"'
