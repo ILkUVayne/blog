@@ -35,6 +35,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
+          registry: registry.cn-shanghai.aliyuncs.com
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
           context: .
           push: true
           tags: ${{ github.sha }}
