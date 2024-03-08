@@ -7,3 +7,4 @@ public/
 *.iml
 .tern-port
 .vscode
+db.json
