@@ -15,13 +15,11 @@ jobs:
       # node 编译
       - name: build
         uses: actions/setup-node@v1
-        with:
-          node-version: 18
       - run: |
-#          npm i -g hexo-cli textlint textlint-rule-ja-space-between-half-and-full-width
-          npm i -g hexo-cli
+          npm i -g hexo-cli textlint textlint-rule-ja-space-between-half-and-full-width
           npm i -f
           hexo clean
+          textlint --fix .\source\_posts\*.md
           hexo g
 
       # docker build，并push
