@@ -19,7 +19,7 @@ jobs:
           node-version: 18
       - run: |
 #          npm i -g hexo-cli textlint textlint-rule-ja-space-between-half-and-full-width
-          npm install -g hexo-cli
+          npm i -g hexo-cli
           npm i -f
           hexo clean
           hexo g
