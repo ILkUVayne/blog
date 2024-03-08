@@ -14,7 +14,7 @@ jobs:
 
       # node 编译
       - name: build
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
       - run: |
           npm i -g hexo-cli textlint textlint-rule-ja-space-between-half-and-full-width
           npm i -f
