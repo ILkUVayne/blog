@@ -16,10 +16,9 @@ jobs:
       - name: build
         uses: actions/setup-node@v4
       - run: |
-          npm i -g hexo-cli textlint textlint-rule-ja-space-between-half-and-full-width
+          npm i -g hexo-cli
           npm i -f
           hexo clean
-          textlint --fix .\source\_posts\*.md
           hexo g
 
       # docker build，并push
