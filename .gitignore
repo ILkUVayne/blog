@@ -6,6 +6,4 @@ public/
 *.log
 *.iml
 .tern-port
-yarn.lock
-package-lock.json
 .vscode
