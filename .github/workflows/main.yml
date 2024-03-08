@@ -44,15 +44,12 @@ jobs:
           sed -i 's/{TAG}/${{ github.sha }}/g' deployment.yaml
       - name: deploy to cluster
         uses: steebchen/kubectl@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-          KUBECTL_VERSION: "1.28"
         with:
-          args: apply -f deployment.yaml
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: apply -f deployment.yaml
       - name: verify deployment
         uses: steebchen/kubectl@master
         env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-          KUBECTL_VERSION: "1.28"
         with:
-          args: '"rollout status -n blog deployment/blog"'
+          config: ${{ secrets.KUBE_CONFIG_DATA }}
+          command: rollout status -n blog deployment/blog
