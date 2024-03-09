@@ -55,7 +55,7 @@ spec:
         app: blog
     spec:
       containers:
-        - image: registry.cn-shanghai.aliyuncs.com/my_hb/my-blog:{TAG}
+        - image: registry.cn-shanghai.aliyuncs.com/my_hb/my_blog:{TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
