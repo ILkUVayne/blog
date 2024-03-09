@@ -42,6 +42,8 @@ jobs:
       # 让K8s应用deployment
       - run: |
           sed -i 's/{TAG}/${{ github.sha }}/g' deployment.yaml
+      - run: |
+          sed -i 's/{DOCKER_SECRETS}/${{ secrets.DOCKER_SECRETS }}/g' deployment.yaml
       - name: deploy to cluster
         uses: steebchen/kubectl@master
         with:
