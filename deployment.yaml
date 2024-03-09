@@ -1,11 +1,3 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: myregistrykey
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5jbi1zaGFuZ2hhaS5hbGl5dW5jcy5jb20iOnsiYXV0aCI6IiQoZG9ja2VyIGNyZWRlbnRpYWwgZ2V0IG15cHJpdmF0ZXJlZ2lzdHJ5LmNvbSB8IGpxIC1yIC5hdXRoKSJ9fX0K
-type: kubernetes.io/dockerconfigjson
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -107,7 +99,7 @@ spec:
             - mountPath: /usr/share/nginx/html/Thumbs.json
               name: thumbs
       imagePullSecrets:
-        - name: myregistrykey
+      - name: dockerregistrykey
       dnsConfig: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
