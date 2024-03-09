@@ -1,3 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: myregistrykey
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJteXByaXZhdGVyZWdpc3RyeS5jb20iOnsiYXV0aCI6IiQoZG9ja2VyIGNyZWRlbnRpYWwgZ2V0IG15cHJpdmF0ZXJlZ2lzdHJ5LmNvbSB8IGpxIC1yIC5hdXRoKSJ9fX0K
+type: kubernetes.io/dockerconfigjson
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -55,7 +63,7 @@ spec:
         app: blog
     spec:
       containers:
-        - image: registry.cn-shanghai.aliyuncs.com/my_hb/my_blog:{TAG}
+        - image: registry.cn-shanghai.aliyuncs.com/my_hb/my-blog:{TAG}
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
@@ -98,6 +106,8 @@ spec:
               name: db
             - mountPath: /usr/share/nginx/html/Thumbs.json
               name: thumbs
+      imagePullSecrets:
+      - name: myregistrykey
       dnsConfig: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
