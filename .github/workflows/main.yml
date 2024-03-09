@@ -40,10 +40,9 @@ jobs:
           tags: registry.cn-shanghai.aliyuncs.com/my_hb/my-blog:${{ github.sha }}
 
       # 让K8s应用deployment
-      - name: add env
+      - name: replace deployment env
         run: |
           sed -i 's/{TAG}/${{ github.sha }}/g' deployment.yaml
-#          sed -i 's/{DOCKER_SECRET}/${{ secrets.DOCKER_SECRETS }}/g' deployment.yaml
       - name: deploy to cluster
         uses: steebchen/kubectl@master
         with:
