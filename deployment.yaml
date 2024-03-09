@@ -5,7 +5,7 @@ metadata:
   namespace: blog
 spec:
   rules:
-    - host: "foo.bar.com"
+    - host: "www.llyy.ink"
       http:
         paths:
           - pathType: Prefix
