@@ -47,8 +47,6 @@ jobs:
         with:
           config: ${{ secrets.KUBE_CONFIG_DATA }}
           command: apply -f deployment.yaml
-#          command: set image --record deployment/blog container=${{ github.repository }}:${{ github.sha }}
-#          command: set image --record deployment/blog blog=${{ github.repository }}:${{ github.sha }}
       - name: verify deployment
         uses: steebchen/kubectl@master
         with:
