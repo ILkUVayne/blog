@@ -38,6 +38,35 @@ curl –sfL \
      --disable traefik
 ~~~
 
+### 安装helm
+
+[helm官方安装](https://helm.sh/zh/docs/intro/install/)
+
+国内服务器安装较慢或者失败，采用第三方包管理方式安装
+
+~~~bash
+# 使用Apt (Debian/Ubuntu)
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+~~~
+
+验证：
+
+~~~bash
+$ helm version
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /root/.kube/config
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /root/.kube/config
+version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}
+
+# 修改配置文件权限，消除警告
+$ chmod -R 600   ~/.kube/config
+$ helm version                 
+version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}
+~~~
+
 ### 修改docker运行时
 
 k3s默认使用containerd，修改为使用docker
@@ -90,17 +119,46 @@ source <(kubectl completion bash)
 source <(kubectl completion zsh)
 ~~~
 
-### 验证
+### 在集群中安装cert-manager
+
+创建cert-manager命名空间:
 
 ~~~bash
-$ kubectl get nodes
-NAME                      STATUS   ROLES                  AGE     VERSION
-izuf6ja8r1bc2wwsrg54vhz   Ready    control-plane,master   3m17s   v1.28.7+k3s1
-$ kubectl -n kube-system get pods
+$ kubectl create namespace cert-manager
+~~~
+
+添加cert-manager Chart
+
+~~~bash
+$ helm repo add jetstack https://charts.jetstack.io
+~~~
+
+获取cert-manager Chart的最新信息
+
+~~~bash
+$ helm repo update
+~~~
+
+安装cert-manager
+
+> cert-manager的版本需要和Kubernetes版本保持兼容。关于cert-manager和Kubernetes版本的对应关系，请参见[Supported Releases](https://cert-manager.io/docs/releases/)。
+
+~~~bash
+$ helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --version v1.12.0 \
+  --set installCRDs=true
+~~~
+
+验证
+
+~~~bash
+kubectl -n cert-manager get pods
 NAME                                      READY   STATUS    RESTARTS   AGE
-local-path-provisioner-7f4c755b68-7rjzr   1/1     Running   0          7m19s
-coredns-58c9946f4-59dd4                   1/1     Running   0          7m19s
-metrics-server-595fb6fd99-4cg7t           1/1     Running   0          7m19s
+cert-manager-6466f8f444-jrspl             1/1     Running   0          3m53s
+cert-manager-cainjector-57ff68fc8-tp4n8   1/1     Running   0          3m53s
+cert-manager-webhook-7bb75bd8dd-z667k     1/1     Running   0          3m53s
 ~~~
 
 ## 配置github Action
