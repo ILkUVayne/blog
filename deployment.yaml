@@ -3,13 +3,13 @@ kind: Ingress
 metadata:
   name: blog
   namespace: blog
-  annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+#  annotations:
+#    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
-  tls:
-    - hosts:
-        - www.llyy.ink
-      secretName: llyy-ink-tls
+#  tls:
+#    - hosts:
+#        - www.llyy.ink
+#      secretName: llyy-ink-tls
   rules:
     - host: "www.llyy.ink"
       http:
