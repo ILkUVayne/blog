@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: blog
   namespace: blog
+  annotations:
+    kubernetes.io/ingress.class: traefik
 #  annotations:
 #    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
@@ -10,18 +12,8 @@ spec:
 #    - hosts:
 #        - www.llyy.ink
 #      secretName: llyy-ink-tls
-  ingressClassName: traefik
+#  ingressClassName: traefik
   rules:
-#    - host: "www.llyy.ink"
-#      http:
-#        paths:
-#          - pathType: Prefix
-#            path: "/"
-#            backend:
-#              service:
-#                name: blog
-#                port:
-#                  number: 80
     - host: www.llyy.ink
       http:
         paths:
