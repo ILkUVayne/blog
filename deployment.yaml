@@ -11,11 +11,21 @@ spec:
 #        - www.llyy.ink
 #      secretName: llyy-ink-tls
   rules:
-    - host: "www.llyy.ink"
+#    - host: "www.llyy.ink"
+#      http:
+#        paths:
+#          - pathType: Prefix
+#            path: "/"
+#            backend:
+#              service:
+#                name: blog
+#                port:
+#                  number: 80
+    - host: www.llyy.ink
       http:
         paths:
-          - pathType: Prefix
-            path: "/"
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: blog
