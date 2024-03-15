@@ -5,6 +5,7 @@ metadata:
   namespace: blog
   annotations:
     kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 #  annotations:
 #    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
