@@ -10,6 +10,7 @@ spec:
 #    - hosts:
 #        - www.llyy.ink
 #      secretName: llyy-ink-tls
+  ingressClassName: traefik
   rules:
 #    - host: "www.llyy.ink"
 #      http:

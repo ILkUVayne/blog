@@ -29,13 +29,15 @@ curl -sfL https://get.k3s.io | sh -
 #### 2.国内源安装
 
 ~~~bash
-curl –sfL \
+curl –sfL \                         
      https://rancher-mirror.oss-cn-beijing.aliyuncs.com/k3s/k3s-install.sh | \
      INSTALL_K3S_MIRROR=cn sh -s - \
      --system-default-registry "registry.cn-hangzhou.aliyuncs.com" \
      --write-kubeconfig ~/.kube/config \
      --write-kubeconfig-mode 666 \
-     --disable traefik
+     --disable traefik \
+     --tls-san "xxx.xxx.xxx.158" \
+     --docker
 ~~~
 
 ### 安装helm
@@ -82,7 +84,22 @@ sudo vim /etc/systemd/system/multi-user.target.wants/k3s.service
 需要修改ExecStart的值，将其修改为：
 
 ~~~bash
-/usr/local/bin/k3s server '--docker' '--no-deploy' 'traefik'
+/usr/local/bin/k3s server '--docker'
+~~~
+
+修改镜像加速
+
+~~~bash
+$ cat > /etc/rancher/k3s/registries.yaml <<EOF
+mirrors:
+  docker.io:
+    endpoint:
+      - "http://hub-mirror.c.163.com"
+      - "https://docker.mirrors.ustc.edu.cn"
+      - "https://registry.docker-cn.com"
+EOF
+
+$ systemctl restart k3s
 ~~~
 
 重启服务
