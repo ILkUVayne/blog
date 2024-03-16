@@ -29,6 +29,10 @@ curl -sfL https://get.k3s.io | sh -
 #### 2.国内源安装
 
 ~~~bash
+# --docker 使用docker作为容器运行时
+# --disable traefik 禁用traefik
+# --tls-san "xxx.xxx.xxx.158" 服务器公网ip 如果是阿里云服务器，需要添加安全组（6443端口默认未开启）
+# --write-kubeconfig ~/.kube/config 修改配置文件路径，和k8s保持一致
 curl –sfL \                         
      https://rancher-mirror.oss-cn-beijing.aliyuncs.com/k3s/k3s-install.sh | \
      INSTALL_K3S_MIRROR=cn sh -s - \
@@ -69,40 +73,7 @@ $ helm version
 version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}
 ~~~
 
-### 修改docker运行时
-
-k3s默认使用containerd，修改为使用docker
-
-> 省略下载安装docker,这部分比较简单，可以自行百度（谷歌）查询资料
-
-安装完docker后修改k3s配置：
-
-~~~bash
-sudo vim /etc/systemd/system/multi-user.target.wants/k3s.service
-~~~
-
-需要修改ExecStart的值，将其修改为：
-
-~~~bash
-/usr/local/bin/k3s server '--docker'
-~~~
-
-修改镜像加速
-
-~~~bash
-$ cat > /etc/rancher/k3s/registries.yaml <<EOF
-mirrors:
-  docker.io:
-    endpoint:
-      - "http://hub-mirror.c.163.com"
-      - "https://docker.mirrors.ustc.edu.cn"
-      - "https://registry.docker-cn.com"
-EOF
-
-$ systemctl restart k3s
-~~~
-
-重启服务
+### 重启服务
 
 ~~~bash
 sudo systemctl daemon-reload
@@ -110,20 +81,6 @@ sudo systemctl restart k3s
 
 # 然后查看节点是否启动正常
 sudo k3s kubectl get no
-~~~
-
-### 配置外网访问
-
-配置外网访问k3s集群，例如**xxx.xxx.xxx.158:6443**
-
-如果是阿里云服务器，需要添加安全组（6443端口默认未开启）
-
-添加tls-san配置
-
-~~~bash
-# xxx.xxx.xxx.158 是云服务器公网地址
-# vim /etc/systemd/system/multi-user.target.wants/k3s.service
-ExecStart=/usr/local/bin/k3s server '--tls-san' 'xxx.xxx.xxx.158'
 ~~~
 
 ### 配置kubectl命令补全
@@ -136,6 +93,30 @@ source <(kubectl completion bash)
 source <(kubectl completion zsh)
 ~~~
 
+### 安装ingress-nginx
+
+ingress-nginx需要从谷歌k8s仓库拉取镜像，国内无法拉取，采取将镜像拉取到本地的方式安装,本地下载方式查看{% post_link 创建github镜像仓库 %}
+
+下载官方**deploy.yaml**
+
+> ingress-nginx 版本需要和k8s对应，具体版本查看官方：https://github.com/kubernetes/ingress-nginx
+
+~~~bash
+wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml
+~~~
+
+替换镜像为本地镜像：
+
+~~~bash
+# vim 编辑替换镜像
+$ vim  deploy.yaml
+~~~
+
+apply 应用
+
+~~~bash
+$ kubectl apply -f deploy.yaml 
+~~~
 ### 在集群中安装cert-manager
 
 创建cert-manager命名空间:
@@ -297,12 +278,23 @@ metadata:
   name: blog
   namespace: blog
 spec:
+  ingressClassName: nginx
   rules:
-    - host: "www.llyy.ink"
+    - host: www.llyy.ink
       http:
         paths:
-          - pathType: Prefix
-            path: "/"
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: blog
+                port:
+                  number: 80
+    - host: llyy.ink
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: blog
@@ -392,7 +384,7 @@ spec:
             - mountPath: /usr/share/nginx/html/Thumbs.json
               name: thumbs
       imagePullSecrets:
-      - name: myregistrykey
+        - name: myregistrykey
       dnsConfig: {}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
@@ -477,14 +469,4 @@ kubectl -n blog get pods
 NAME                    READY   STATUS    RESTARTS   AGE
 blog-6df748f77c-6vdpw   1/1     Running   0          42h
 blog-6df748f77c-fq86r   1/1     Running   0          42h
-~~~
-
-curl访问
-
-~~~bash
-curl www.llyy.ink
-<!DOCTYPE html>
-<html lang=en>
-// ...
-</html>
 ~~~
