@@ -4,16 +4,8 @@ metadata:
   name: blog
   namespace: blog
   annotations:
-    kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-#  annotations:
-#    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    kubernetes.io/ingress.class: "nginx"
 spec:
-#  tls:
-#    - hosts:
-#        - www.llyy.ink
-#      secretName: llyy-ink-tls
-#  ingressClassName: traefik
   rules:
     - host: www.llyy.ink
       http:
