@@ -3,9 +3,8 @@ kind: Ingress
 metadata:
   name: blog
   namespace: blog
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
 spec:
+  ingressClassName: nginx
   rules:
     - host: www.llyy.ink
       http:
