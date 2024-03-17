@@ -88,7 +88,7 @@ stringData:
 
 ### 3.配置ClusterIssuer
 
-注意 **groupName** 保持一直
+注意 **groupName** 保持一致
 
 ~~~yaml
 # ClusterIssuer.yaml
@@ -123,7 +123,7 @@ spec:
               key: access-key-secret
 ~~~
 
-### 4.配置Ingress
+### 4.配置Ingress，自动签发证书
 
 ~~~yaml
 # ingress.yaml
@@ -161,6 +161,26 @@ spec:
                 name: blog
                 port:
                   number: 80
+~~~
+
+### 5.配置certificate，手动签发证书
+
+~~~yaml
+# certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: llyy-ink
+  namespace: blog
+spec:
+  secretName: llyy-ink-tls
+  commonName: "llyy.ink"
+  dnsNames:
+    - "llyy.ink"
+    - "*.llyy.ink"
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
 ~~~
 
 ## apply
