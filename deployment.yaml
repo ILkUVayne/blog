@@ -12,9 +12,6 @@ spec:
     - hosts:
       - www.llyy.ink
       secretName: grafana-ali-letsencrypt-staging
-    - hosts:
-      - llyy.ink
-      secretName: grafana-ali-letsencrypt-staging
   rules:
     - host: www.llyy.ink
       http:
