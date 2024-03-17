@@ -117,47 +117,9 @@ apply 应用
 ~~~bash
 $ kubectl apply -f deploy.yaml 
 ~~~
-### 在集群中安装cert-manager
+### 配置tls证书
 
-创建cert-manager命名空间:
-
-~~~bash
-$ kubectl create namespace cert-manager
-~~~
-
-添加cert-manager Chart
-
-~~~bash
-$ helm repo add jetstack https://charts.jetstack.io
-~~~
-
-获取cert-manager Chart的最新信息
-
-~~~bash
-$ helm repo update
-~~~
-
-安装cert-manager
-
-> cert-manager的版本需要和Kubernetes版本保持兼容。关于cert-manager和Kubernetes版本的对应关系，请参见[Supported Releases](https://cert-manager.io/docs/releases/)。
-
-~~~bash
-$ helm install \
-  cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --version v1.12.0 \
-  --set installCRDs=true
-~~~
-
-验证
-
-~~~bash
-kubectl -n cert-manager get pods
-NAME                                      READY   STATUS    RESTARTS   AGE
-cert-manager-6466f8f444-jrspl             1/1     Running   0          3m53s
-cert-manager-cainjector-57ff68fc8-tp4n8   1/1     Running   0          3m53s
-cert-manager-webhook-7bb75bd8dd-z667k     1/1     Running   0          3m53s
-~~~
+实现方式： {% post_link cert-manager结合alidns-webhook实现签发免费证书并为证书自动续期 %}
 
 ## 配置github Action
 
