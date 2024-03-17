@@ -3,15 +3,15 @@ kind: Ingress
 metadata:
   name: blog
   namespace: blog
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+#  annotations:
+#    cert-manager.io/cluster-issuer: letsencrypt
 #    nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
   ingressClassName: nginx
-  tls:
-    - hosts:
-      - www.llyy.ink
-      secretName: grafana-ali-letsencrypt-staging
+#  tls:
+#    - hosts:
+#      - www.llyy.ink
+#      secretName: grafana-ali-letsencrypt-staging
   rules:
     - host: www.llyy.ink
       http:
