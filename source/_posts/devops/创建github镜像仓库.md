@@ -1,6 +1,8 @@
 ---
 title: 创建github镜像仓库
 date: 2024-03-16 15:24:40
+categories:
+- devops
 tags:
 - image
 - k8s

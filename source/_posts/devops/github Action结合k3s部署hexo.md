@@ -1,6 +1,8 @@
 ---
 title: github Action结合k3s部署hexo
 date: 2024-03-08 16:54:00
+categories:
+- devops
 tags:
 - k3s
 - github Actions
@@ -96,7 +98,7 @@ source <(kubectl completion zsh)
 
 ### 安装ingress-nginx
 
-ingress-nginx需要从谷歌k8s仓库拉取镜像，国内无法拉取，采取将镜像拉取到本地的方式安装,本地下载方式查看{% post_link 创建github镜像仓库 %}
+ingress-nginx需要从谷歌k8s仓库拉取镜像，国内无法拉取，采取将镜像拉取到本地的方式安装,本地下载方式查看 {% post_link devops/创建github镜像仓库 %}
 
 下载官方**deploy.yaml**
 
@@ -120,7 +122,7 @@ $ kubectl apply -f deploy.yaml
 ~~~
 ### 配置tls证书
 
-实现方式： {% post_link cert-manager结合alidns-webhook实现签发免费证书并为证书自动续期 %}
+实现方式： {% post_link devops/cert-manager结合alidns-webhook实现签发免费证书并为证书自动续期 %}
 
 ## 配置github Action
 

@@ -1,6 +1,8 @@
 ---
 title: cert-manager结合alidns-webhook实现签发免费证书并为证书自动续期
 date: 2024-03-17 21:44:09
+categories:
+- devops
 tags:
 - cert-manager
 - alidns-webhook
