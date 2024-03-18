@@ -13,6 +13,7 @@ tags:
 - github代码仓库（托管代码）
 - 域名（同样是阿里云购买的域名）
 - 一个配置好的hexo博客
+- 阿里云服务器需要配置安全组（开放80/443/6443等端口）
 
 ## 配置服务器环境
 
@@ -30,7 +31,7 @@ curl -sfL https://get.k3s.io | sh -
 
 ~~~bash
 # --docker 使用docker作为容器运行时
-# --disable traefik 禁用traefik
+# --disable traefik 禁用traefik，使用ingress-nginx
 # --tls-san "xxx.xxx.xxx.158" 服务器公网ip 如果是阿里云服务器，需要添加安全组（6443端口默认未开启）
 # --write-kubeconfig ~/.kube/config 修改配置文件路径，和k8s保持一致
 curl –sfL \                         

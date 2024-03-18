@@ -7,6 +7,12 @@ tags:
 - k3s
 ---
 
+## 前提条件
+
+- 本文是使用的k3s，且使用ingress-nginx(需要手动安装)
+- 禁用了traefik，使用traefik可能会失败或者实现方式有所不同，请自寻查找资料
+- 本文使用阿里云服务器，其他服务器需要自寻查找相应的webhook资料
+
 ## 配置cert-manager
 
 ### 1.创建cert-manager命名空间:
