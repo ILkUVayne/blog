@@ -6,7 +6,7 @@ categories:
 - golang
 tags:
 - env
-- go
+- golang
 - install
 ---
 
