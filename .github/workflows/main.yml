@@ -18,6 +18,7 @@ jobs:
       - run: |
           npm i -g hexo-cli
           npm i
+          npm install hexo-generator-search --save
           hexo clean
           hexo g
 

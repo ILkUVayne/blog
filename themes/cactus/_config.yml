@@ -17,6 +17,9 @@ nav:
   home: /
   about: /about/
   articles: /archives/
+  category: /categories/
+  tag: /tags/
+  search: /search/
   projects: https://github.com/ILkUVayne
 
 
