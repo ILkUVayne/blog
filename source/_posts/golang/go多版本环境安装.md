@@ -8,6 +8,7 @@ tags:
 - env
 - golang
 - install
+- linux
 ---
 
 ## 序言

@@ -6,6 +6,7 @@ categories:
 tags:
 - k3s
 - github Actions
+- linux
 ---
 
 ## 准备工作

@@ -7,6 +7,7 @@ tags:
 - cert-manager
 - alidns-webhook
 - k3s
+- linux
 ---
 
 ## 前提条件
