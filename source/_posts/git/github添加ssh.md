@@ -48,6 +48,19 @@ ssh -T git@github.com
 Hi ILkUVayne! You've successfully authenticated, but GitHub does not provide shell access.
 ~~~
 
+## 番外：一些常用命令
+
+~~~bash
+# 设置全局username
+$ git config --global user.name "username"
+# 设置全局user email
+$ git config --global user.email "1193055746@qq.com"
+# 清除.idea缓存
+git rm -r --cached .idea
+# 制作一个裸露的Git存储库 git@github.com:ILkUVayne/gii.git 替换为需要制作的仓库
+$ git clone --bare git@github.com:ILkUVayne/gii.git
+~~~
+
 ## FAQ
 
 ### fatal: Could not read from remote repository.
