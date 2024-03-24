@@ -9,9 +9,10 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    - hosts:
-      - www.llyy.ink
-      secretName: llyy-ink-tls
+    - secretName: llyy-ink-tls
+      hosts:
+        - www.llyy.ink
+        - llyy.ink
   rules:
     - host: www.llyy.ink
       http:
