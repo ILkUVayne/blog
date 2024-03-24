@@ -146,7 +146,7 @@ metadata:
 spec:
   ingressClassName: nginx
   # 配置多个hosts 
-  # 注意：之前如果已存在llyy-ink-tls ，需要删除 kubectl -n blog delete secrets llyy-ink-tls ，然后为自动重写生成新的
+  # 注意：之前如果已存在llyy-ink-tls ，需要删除 kubectl -n blog delete secrets llyy-ink-tls ，然后会自动重写生成新的
   #  tls:
   #    - secretName: llyy-ink-tls
   #      hosts:
