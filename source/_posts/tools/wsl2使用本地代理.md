@@ -10,7 +10,7 @@ tags:
 
 ## 前言
 
-> 本文代理工具使用v2rayN
+> 本文代理工具使用v2rayN，[v2rayN网盘下载地址](https://www.alipan.com/s/jtuqMEoC8hy), 该压缩包使用exe格式压缩，请使用压缩软件解压，例如：[Bandizip](https://cn.bandisoft.com/bandizip/)。如需下载最新版本的v2rayN，请到[官方地址下载](https://github.com/2dust/v2rayN/releases)
 
 当在使用wsl2的过程中需要从外网中下载更新资源（例如：github克隆代码，nvim下载更新插件等等）时，如果不使用代理会很慢或者失败。
 
