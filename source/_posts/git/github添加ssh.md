@@ -59,6 +59,9 @@ $ git config --global user.email "1193055746@qq.com"
 git rm -r --cached .idea
 # 制作一个裸露的Git存储库 git@github.com:ILkUVayne/gii.git 替换为需要制作的仓库
 $ git clone --bare git@github.com:ILkUVayne/gii.git
+# 查看git提交行数
+$ git log --format='%aN' | sort -u | while read name; do echo -en "$name\t"; git log --author="$name" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf "added lines: %s, removed lines: %s, t
+otal lines: %s\n", add, subs, loc }' -; done
 ~~~
 
 ## FAQ
