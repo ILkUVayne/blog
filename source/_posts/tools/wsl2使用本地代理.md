@@ -92,4 +92,4 @@ source proxy unset
 
 主机的防火墙如果没有关闭的话，wsl2中的代理可能无法生效
 
-主机上 **Windows Defender** 设置：可以简单关闭公用网络的防火墙，在Shell中 ping 主机 ip，或运行 wget www.google.com，如果可以运行，说明上面几步成功，此时 Shell 可以链接到主机上的代理
+主机上 **Windows Defender** 设置：可以简单关闭公用网络的防火墙，在Shell中 ping 主机 ip，或运行 `wget www.google.com` ，如果可以运行，说明上面几步成功，此时 Shell 可以链接到主机上的代理
