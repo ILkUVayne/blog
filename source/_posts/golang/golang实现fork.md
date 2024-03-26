@@ -19,7 +19,7 @@ golang没有提供官方的fork函数，但是提供了较为底层的系统调�
 
 ~~~go
 func fork() int {
-    id, _, _ := unix.Syscall(unix.SYS_FORK, 0, 0, 0)
+    id, _, _ := syscall.Syscall(syscall.SYS_FORK, 0, 0, 0)
     return int(id)
 }
 ~~~
@@ -67,8 +67,8 @@ pid
 
 options 
 
-- unix.WNOHANG 如果没有任何已经结束了的子进程，则马上返回，不等待
-- unix.WUNTRACED 如果子进程进入暂停执行的情况，则马上返回，但结束状态不予理会
+- syscall.WNOHANG 如果没有任何已经结束了的子进程，则马上返回，不等待
+- syscall.WUNTRACED 如果子进程进入暂停执行的情况，则马上返回，但结束状态不予理会
 
 返回值
 
@@ -97,7 +97,7 @@ func main() {
     child()
     sum := 0
     for {
-        pid, _ := wait4(-1, unix.WNOHANG)
+        pid, _ := wait4(-1, syscall.WNOHANG)
         if pid != 0 && pid != -1 {
             // 判断执行完成的子进程是否为cPid，如果有多个子进程执行任务，可以这样判断
             if pid == cPid {
