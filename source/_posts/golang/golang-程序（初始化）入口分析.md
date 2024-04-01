@@ -7,6 +7,7 @@ tags:
 - golang
 - runtime
 - plan9
+- gmp
 ---
 
 > 版本：go 1.21
