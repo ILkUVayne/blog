@@ -23,7 +23,7 @@ Warning: Permanently added the ECDSA host key for IP address '[140.82.116.35]:44
 
 ### 解决方法
 
-> 参考文档出处：http://www.cnblogs.com/xiangyangzhu/
+> 参考文档出处：https://www.cnblogs.com/xiangyangzhu/p/5316041.html
 
 将如下ip添加到 `/etc/hosts` 中即可
 
