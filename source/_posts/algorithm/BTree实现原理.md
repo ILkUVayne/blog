@@ -34,6 +34,12 @@ BTree和B-Tree都是指B树，不要把B-Tree理解成了B-树。本文主要分
     - 根结点：2个孩子，1个关键字
     - 其他结点：t个孩子，t-1个关键字
 
+结点结构如下：
+
+[n,P0,K1,P1,K2,P2 ...... Ki,Pi ...... Kn,Pn]
+
+非叶子结点Pn-1指针指向小于Kn的左孩子Pn指向大于Kn的右孩子，叶子结点P为nil
+
 ## 插入
 
 > BTree在线编辑工具：https://www.cs.usfca.edu/~galles/visualization/BTree.html
