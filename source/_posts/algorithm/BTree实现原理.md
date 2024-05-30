@@ -36,6 +36,8 @@ BTree和B-Tree都是指B树，不要把B-Tree理解成了B-树。本文主要分
 
 ## 插入
 
+> BTree在线编辑工具：https://www.cs.usfca.edu/~galles/visualization/BTree.html
+
 插入流程如下：
 
 1. 根据要插入的key的值，在BTree查找key存不存，如果已存在，用新的value覆盖旧的value，操作结束，否则执行步骤2
