@@ -73,6 +73,45 @@ children存放子结点信息，它是一个node指针切片。
 
 Item是一个实现了Less方法的接口类型，用于容纳任意实现了Less方法的元素类型，便于后续的创建、查找和删除等操作。
 
+## 创建
+
+New函数用于创建一颗B树，degree是这棵树的度，从NewWithFreeList函数能看出，degree必须大于1。
+
+例如New(2)则会创建一个2-3-4树，每个结点有1-3个元素，有2-4个孩子
+
+~~~go
+const (
+    DefaultFreeListSize = 32
+)
+
+func New(degree int) *BTree {
+    return NewWithFreeList(degree, NewFreeList(DefaultFreeListSize))
+}
+
+func NewWithFreeList(degree int, f *FreeList) *BTree {
+    if degree <= 1 {
+        panic("bad degree")
+    }
+    return &BTree{
+        degree: degree,
+        cow:    &copyOnWriteContext{freelist: f},
+    }
+}
+~~~
+
+NewFreeList函数创建一个新的自由列表，size是列表的容量大小
+
+~~~go
+type FreeList struct {
+    mu       sync.Mutex
+    freelist []*node
+}
+
+func NewFreeList(size int) *FreeList {
+    return &FreeList{freelist: make([]*node, 0, size)}
+}
+~~~
+
 ## 插入
 
 // todo
