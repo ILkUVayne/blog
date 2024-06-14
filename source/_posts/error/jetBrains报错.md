@@ -8,6 +8,10 @@ tags:
   - jetBrains
 ---
 
+## 前言
+
+jetBrains软件使用中的报错及处理方法汇总。
+
 ## Cannot invoke
 
 ### 具体报错信息
