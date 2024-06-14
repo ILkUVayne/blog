@@ -6,6 +6,7 @@ categories:
 tags:
 - proxy
 - wsl2
+- tools
 ---
 
 ## 前言

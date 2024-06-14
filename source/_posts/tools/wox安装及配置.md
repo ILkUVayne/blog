@@ -6,6 +6,7 @@ categories:
 tags:
 - wox
 - launcher
+- tools
 ---
 
 ## 前言

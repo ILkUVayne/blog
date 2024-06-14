@@ -7,6 +7,7 @@ tags:
 - zsh
 - linux
 - ubuntu
+- tools
 ---
 
 ## 前言
