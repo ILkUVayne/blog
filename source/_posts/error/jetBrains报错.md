@@ -99,7 +99,7 @@ Caused by: java.lang.ClassNotFoundException: com.intellij.ide.util.PropertiesCom
 C:\Users\username\AppData\Roaming\JetBrains\CLion2023.2\plugins
 ~~~
 
-### 参考文档
+### ref
 
 - https://rider-support.jetbrains.com/hc/en-us/community/posts/12723703124370-My-IDE-cannot-start-because-of-a-Java-error
 - https://www.jetbrains.com/help/rider/Directories_Used_by_the_IDE_to_Store_Settings_Caches_Plugins_and_Logs.html#plugins-directory
@@ -123,6 +123,6 @@ Goland重现安装新的版本后，点击图标无响应，无法启动。卸�
 C:\Users\username\AppData\Roaming\JetBrains\CLion2023.2
 ~~~
 
-### 参考文档
+### ref
 
 - https://blog.csdn.net/FFDreamer/article/details/125441858
