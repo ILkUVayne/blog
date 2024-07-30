@@ -104,3 +104,48 @@ type dog struct{}
 ~~~
 
 添加示例声明代码即可（其他的接口同理），此时再执行 `dog{}.eat("apple")` 方法就会报错：` cannot use (*dog)(nil) (value of type *dog) as animal value in variable declaration: *dog does not implement animal (missing method sleep) ` ，因为此时我们还没有实现 `sleep` 方法。
+
+## 发布第三方包到github
+
+在工作学习的过程中，我们经常回归纳总结一些工具或者库发布到github，供其他的项目直接引用。
+
+步骤如下：
+
+- 创建一个github仓库，保存需要发布的包
+
+直接在github网页上创建一个新的库即可（可见性要设成public）
+
+- 本地创建项目并初始化
+
+> 以我的这个库为例： https://github.com/ILkUVayne/utlis-go
+
+~~~bash
+# 创建目录
+mkdir utlis-go
+cd utlis-go
+
+# go mod init
+# 这里命名规则应遵循： github.com/{github名}/{项目名}
+go mod init github.com/ILkUVayne/utlis-go
+~~~
+
+- 推送到远程仓库
+
+新的仓库需要初始化，按照上面创建仓库后，仓库页面显示的初始化方式初始化仓库并将本地已编写好的项目推送到远程仓库。
+
+- 添加tag
+
+可以使用命令行添加，也可以在github网页中添加
+
+~~~bash
+# 创建tag
+git tag -a v1.0.0 -m "添加tag"
+# 推送tag
+git push origin v1.0.0
+~~~
+
+- 使用
+
+~~~bash
+go get -u github.com/ILkUVayne/utlis-go@v1.0.0
+~~~
