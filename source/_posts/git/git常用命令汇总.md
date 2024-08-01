@@ -10,7 +10,7 @@ tags:
 
 ## 前言
 
-git 使用中的一些命令技巧汇总。
+git 使用中的一些命令或技巧汇总。
 
 ## tag
 
@@ -28,4 +28,14 @@ git push origin v1.0.0
 
 # 推送所有tag
 git push origin --tags
+~~~
+
+- 其他
+
+~~~bash
+# 查看tag列表
+git tag
+
+# 匹配tag
+git tag -l "v1.*"
 ~~~
