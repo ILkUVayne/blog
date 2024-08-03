@@ -144,8 +144,17 @@ git tag -a v1.0.0 -m "添加tag"
 git push origin v1.0.0
 ~~~
 
+- 版本
+
+未指定大版本情况下，默认版本为v0/v1，当大于等于v2版本时，对于库本身需要修改`go mod`版本号，例如 `github.com/ILkUVayne/utlis-go/v2` ，安装时`go get`中要指定大版本号
+
 - 使用
 
 ~~~bash
+# default
 go get -u github.com/ILkUVayne/utlis-go@v1.0.0
+
+# v1
+go get -u github.com/ILkUVayne/utlis-go/v1
 ~~~
+
