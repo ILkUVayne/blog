@@ -178,7 +178,7 @@ retry:
 
 runqputslow函数
 
-将g和本地可运行队列中的一批工作放到全局队列中
+将gp和本地可运行队列中的一批工作放到全局队列中
 
 /src/runtime/proc.go:6235
 
@@ -204,7 +204,7 @@ func runqputslow(pp *p, gp *g, h, t uint32) bool {
     }
     // 将传入runqputslow的gp放入到batch的末尾
     batch[n] = gp
-    // 如果要随机化调度，打乱batch中元素的顺序，默认false
+    // 是否需要要随机化调度，打乱batch中元素的顺序，默认false
     if randomizeScheduler {
         for i := uint32(1); i <= n; i++ {
             j := fastrandn(i + 1)
@@ -274,7 +274,7 @@ func (q *gQueue) pushBackAll(q2 gQueue) {
 
 ### wakep函数
 
-wakep函数尝试唤醒（新建）M执⾏任务，发挥多核优势
+wakep函数尝试唤醒（新建）M执⾏任务，发挥多核优势。若当前不存在空闲的p时，唤醒失败。
 
 /src/runtime/proc.go:2729
 
@@ -788,7 +788,7 @@ newproc方法主要实现的功能：
 2. 首先尝试从g0.m.p的本地空闲队列p.gFree中获取g,若不存在，则从全局空闲队列sched.gFree中获取，还是不存在时，调用malg创建g
 3. 对获取到的g进行一些初始化（或者重置）操作
 4. 将 g 更换为 _Grunnable 状态，分配唯一id
-5. 将创建可运行g放入p可运行队列（P.runnext、P.runq、sched.runq）中去，依据优先级从高到低尝试放入队列
+5. 将创建的可运行g放入p可运行队列（P.runnext、P.runq）或者全局可运行队列（sched.runq）中去，依据优先级从高到低尝试放入队列
 6. mainStarted == true 时(main函数已经开始执行)，则调用wakep()尝试唤醒其他M/P执行任务，充分发挥多核优势
 7. wakep会从全局空闲p sched.pidle中获取p,如果不存在则直接返回
 8. 存在空闲p，尝试从空闲的m队列sched.midle中获取一个来绑定p执行新的g

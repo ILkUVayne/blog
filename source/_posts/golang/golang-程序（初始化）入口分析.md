@@ -16,6 +16,8 @@ tags:
 
 ## 前言
 
+> 本文展示代码为关键代码，建议结合完整源代码对照学习
+
 本文尝试从源码的角度分析golang程序（初始化）入口，了解golang启动过程中大概都做了哪些事情。
 
 ## Hello world
@@ -34,7 +36,7 @@ func main() {
 
 ~~~bash
 # -gcflags "-N -l" 参数关闭编译器代码优化和函数内联，避免断点和单步执⾏⽆法准确对应源码⾏，避免⼩函数和局部变量被优化掉
-$ go build -gcflags "-N -l" -o entry entry.go
+go build -gcflags "-N -l" -o entry entry.go
 ~~~
 
 ## gdb调试entry
@@ -44,7 +46,7 @@ $ go build -gcflags "-N -l" -o entry entry.go
 gdb调试，设置断点
 
 ~~~bash
-$ gdb entry 
+gdb entry 
 ...
 (gdb) info file
 Local exec file:
@@ -118,7 +120,7 @@ Breakpoint 3 at 0x454220: file /usr/local/go_src/21/go/src/runtime/asm_amd64.s, 
 
 ~~~bash
 # 添加断点runtime.rt0_go
-$ dlv debug
+dlv debug
 Type 'help' for list of commands.
 (dlv) b runtime.rt0_go
 Breakpoint 1 set at 0x463680 for runtime.rt0_go() /usr/local/go_src/21/go/src/runtime/asm_amd64.s:161
@@ -350,7 +352,7 @@ POPQ	AX
 // 调用runtime.mstart启动工作线程m,进入调度系统
 // 在进行一些设置和检测后
 // 执行调度方法schedule()，开始协程调度，该函数不会返回
-// 这里就会调度刚创建的runtime.main协程，并运行
+// 这里就会调度刚创建的runtime.main协程，并运行，至此程序初始化完成并启动
 CALL	runtime·mstart(SB)
 
 CALL	runtime·abort(SB)	// mstart should never return

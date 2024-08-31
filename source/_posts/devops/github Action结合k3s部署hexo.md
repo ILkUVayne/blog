@@ -66,14 +66,14 @@ sudo apt-get install helm
 验证：
 
 ~~~bash
-$ helm version
+helm version
 WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /root/.kube/config
 WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /root/.kube/config
 version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}
 
 # 修改配置文件权限，消除警告
-$ chmod -R 600   ~/.kube/config
-$ helm version                 
+chmod -R 600   ~/.kube/config
+helm version                 
 version.BuildInfo{Version:"v3.14.2", GitCommit:"c309b6f0ff63856811846ce18f3bdc93d2b4d54b", GitTreeState:"clean", GoVersion:"go1.21.7"}
 ~~~
 
@@ -113,7 +113,7 @@ wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10
 
 ~~~bash
 # vim 编辑，将官方的镜像地址替换为下载到本地的镜像，避免下载镜像缓慢或者失败的问题
-$ vim  deploy.yaml
+vim  deploy.yaml
 ~~~
 
 示例：
@@ -131,7 +131,7 @@ $ vim  deploy.yaml
 apply 应用
 
 ~~~bash
-$ kubectl apply -f deploy.yaml 
+kubectl apply -f deploy.yaml 
 ~~~
 ### 配置tls证书
 
@@ -383,13 +383,13 @@ spec:
 ### 创建namespace
 
 ~~~bash
-$ kubectl create namespace blog
+kubectl create namespace blog
 ~~~
 
 验证：
 
 ~~~bash
-$ kubectl get namespaces                                 
+kubectl get namespaces                                 
 NAME              STATUS   AGE
 kube-system       Active   3d19h
 kube-public       Active   3d19h
@@ -425,7 +425,7 @@ kubectl create secret docker-registry --namespace blog myregistrykey \
 
 ~~~bash
 # .dockerconfigjson 保存的就是账号信息，可以使用 echo 'eyJh...' | base64 --decode 验证
-$ kubectl -n blog get secrets myregistrykey --output yaml
+kubectl -n blog get secrets myregistrykey --output yaml
 apiVersion: v1
 data:
   .dockerconfigjson: eyJhdXR ... jMlE9In19fQ==

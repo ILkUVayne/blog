@@ -288,17 +288,17 @@ func sysmon() {
 
 - _Prunning
 
-p在_Prunning状态，说明与p关联的m上的g正在被运行，判断g运行时间是否超过10毫秒，如果超过了调用preemptone函数进行抢占。这个抢占是一个异步处理，preemptone设置当前被抢占的g的preempt字段为true,并将stackguard0字段设置为0xfffffade,并没有将当前g暂停执行的逻辑。 Go在函数调用之前会设置安全点，这个是编译器为我们插入的代码。在函数调用的时候会检查stackguard0的大小，而决定是否调用runtime.morestack_noctxt函数。morestack_noctxt是汇编编写的，实现如下，它直接调用morestack函数，morestack会将当前调度信息保存起来，然后切换到g0栈执行newstack函数。newstack函数主要完成两项工作：一是检查是否响应sysmon发起的抢占请求，二是检查栈是否需要进行扩容。newstack检查被抢占g的状态，如果处于抢占状态，调用gopreempt_m将被抢占的gp切换出去放入到全局g运行队列。gopreempt_m是goschedImpl的简单包装，真正处理逻辑在goschedImpl函数，逻辑同主动调度
+p在_Prunning状态，说明与p关联的m上的g正在被运行，判断g运行时间是否超过10毫秒，如果超过了调用preemptone函数进行抢占。这个抢占是一个异步处理，preemptone设置当前被抢占的g的preempt字段为true,并将stackguard0字段设置为0xfffffade，此时并没有将当前g暂停执行的逻辑。 Go在函数调用之前会设置安全点，这个是编译器为我们插入的代码。在函数调用的时候会检查stackguard0的大小，而决定是否调用runtime.morestack_noctxt函数。morestack_noctxt是汇编编写的，实现如下，它直接调用morestack函数，morestack会将当前调度信息保存起来，然后切换到g0栈执行newstack函数。newstack函数主要完成两项工作：一是检查是否响应sysmon发起的抢占请求，二是检查栈是否需要进行扩容。newstack检查被抢占g的状态，如果处于抢占状态，调用gopreempt_m将被抢占的gp切换出去放入到全局g运行队列。gopreempt_m是goschedImpl的简单包装，真正处理逻辑在goschedImpl函数，逻辑同主动调度
 
 - _Psyscall
 
-p在_Psyscall状态，说明与p关联的m上的g正在进行系统调用。只要下面的三个条件有任何一个不满足，就会对处于_Psyscall状态的p进行抢占。
+p在_Psyscall状态，说明与p关联的m上的g正在进行系统调用。只要下面的三个条件有任何一个满足，就会对处于_Psyscall状态的p进行抢占。
 
 1. p的运行队列中还有等待运行的g，需要及时的让p的本地队列中的g得到调度，而当前的g又处在系统调用中，无法执行其他的g,因此将当前的p抢占过来运行其他的g.
 2. 当前没有空闲的p(sched.npidle为0),也没有自旋的m(sched.nmspinning为0)，说明大家都在忙，这时抢占当前正处于系统调用中而实际上用不上的p,分配给其他线程用于调度执行其他的g.
 3. 从上一次监控线程留意到p对应的m处于系统调用中到现在已经超过了10毫秒，说明系统调用已花费了比较长的时间，需要进行抢占。使得retake函数的返回值不等于0，让sysmon线程保持20微妙的轮询检查周期，提高监控的实时性。
 
-当上述三个条件有任何一个不满足时，会将p的状态从_Psyscall修改为_Pidle，然后调用handoffp函数，将与进入系统调用的m绑定的p分离。handoff会对当前的条件进行检查，如果满足下面的条件则会调用startm函数启动新的工作线程来与当前的p进行关联，执行可运行的g.具体条件有以下几种：
+当上述三个条件有任何一个满足时，会将p的状态从_Psyscall修改为_Pidle，然后调用handoffp函数，将与进入系统调用的m绑定的p分离。handoff会对当前的条件进行检查，如果满足下面的条件则会调用startm函数启动新的工作线程来与当前的p进行关联，执行可运行的g.具体条件有以下几种：
 
 1. pp的本地队列或全局队列中有运行的g,立即启动工作线程对g进行调度
 2. 当前处于在垃圾回收标记阶段，启动线程运行gc work
@@ -403,7 +403,7 @@ preemptone主要做了3件事：
 
 1. 设置抢占标志gp.preempt为true
 2. 将gp.stackguard0设置为stackPreempt,stackPreempt是一个很大的值，用于判断是否抢占
-3. 检查是否支持异步抢占，如果不支持，则只能等待发生函数调用时（此时是协作式调度，是否能够抢占gp不能的到保证，取决于gp是否会有函数调用，例如：go func (for {}){}() 这种情况下则会一直阻塞），检查gp并抢占。如果支持，直接向当前P绑定的M发送SIGURG信号，M产生中断并执行回调，即将gp抢占
+3. 检查是否支持异步抢占，如果不支持，则只能等待发生函数调用时（此时是协作式调度，是否能够抢占gp不能的到保证，取决于gp是否会有函数调用，例如：`go func (for {}){}()` 这种情况下则会一直阻塞），检查gp并抢占。如果支持，直接向当前P绑定的M发送SIGURG信号，M产生中断并执行回调，即将gp抢占
 
 /src/runtime/proc.go:5769
 
@@ -588,7 +588,7 @@ func newstack() {
     
     // ...
 	
-    // 如果需要对栈进行调整
+    // 如果需要被抢占
     if preempt {
         if gp == thisg.m.g0 {
             throw("runtime: preempt g0")
