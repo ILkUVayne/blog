@@ -34,7 +34,7 @@ curl -sfL https://get.k3s.io | sh -
 
 ~~~bash
 # --docker 使用docker作为容器运行时
-# --disable traefik 禁用traefik，使用ingress-nginx
+# --disable traefik 禁用traefik，本项目使用ingress-nginx，需要单独安装
 # --tls-san "xxx.xxx.xxx.158" 服务器公网ip 如果是阿里云服务器，需要添加安全组（6443端口默认未开启）
 # --write-kubeconfig ~/.kube/config 修改配置文件路径，和k8s保持一致
 curl –sfL \                         
@@ -84,7 +84,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart k3s 
 
 # 然后查看节点是否启动正常
-sudo k3s kubectl get no
+kubectl get node
 ~~~
 
 ### 配置kubectl命令补全
@@ -112,9 +112,21 @@ wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10
 替换镜像为本地镜像：
 
 ~~~bash
-# vim 编辑替换镜像
+# vim 编辑，将官方的镜像地址替换为下载到本地的镜像，避免下载镜像缓慢或者失败的问题
 $ vim  deploy.yaml
 ~~~
+
+示例：
+
+> 按照示例依次替换镜像即可
+
+使用命令 `docker images` 查看本地已有的镜像：
+
+![ingress_1](/images/devops/github_action/ingress_1.png)
+
+替换对应 `deploy.yaml` 的中的image:
+
+![ingress_2](/images/devops/github_action/ingress_2.png)
 
 apply 应用
 
@@ -393,7 +405,8 @@ blog              Active   2d15h
 登录云服务器，并登录阿里云Docker Registry
 
 ~~~bash
-$ docker login --username=账号 registry.cn-shanghai.aliyuncs.com
+# 这里账号替换为实际的账号名，如果是用的阿里云镜像仓库，可以到仓库页面获取账号及密码
+docker login --username=账号 registry.cn-shanghai.aliyuncs.com
 ~~~
 
 创建名字为myregistrykey的Secret
