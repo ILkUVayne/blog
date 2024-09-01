@@ -45,7 +45,7 @@ const (
     // 手动触发GC
     gcTriggerCycle
 )
-// 单位 nano，因此实际值为 120s = 2min
+// 单位 nanosecond（纳秒），因此实际值为 120s = 2min
 var forcegcperiod int64 = 2 * 60 * 1e9
 
 func (t gcTrigger) test() bool {

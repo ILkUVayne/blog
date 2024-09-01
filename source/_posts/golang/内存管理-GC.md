@@ -970,7 +970,7 @@ func (head *lfstack) pop() unsafe.Pointer {
 
 #### 三色标记着色原理
 
-mspan结构种存放了GC相关字段
+mspan结构中存放了GC相关字段
 
 - allocBits：标识内存的闲忙状态，一个bit位对应一个object大小的内存块，值为1代表已使用；值为0代表未使用
 - gcmarkBits：只在GC期间使用. 值为1代表占用该内存块的对象被标记存活
