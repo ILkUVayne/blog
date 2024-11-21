@@ -178,7 +178,7 @@ retry:
 
 runqputslow函数
 
-将gp和本地可运行队列中的一批工作放到全局队列中
+将gp和本地可运行队列中的一批g放到全局队列中
 
 /src/runtime/proc.go:6235
 
@@ -290,7 +290,7 @@ func wakep() {
     var pp *p
     lock(&sched.lock)
     pp, _ = pidlegetSpinning(0)
-    // 没有空闲的p,返回
+    // 没有空闲的p,唤醒失败，直接返回
     if pp == nil {
         if sched.nmspinning.Add(-1) < 0 {
             throw("wakep: negative nmspinning")
@@ -332,7 +332,7 @@ func startm(pp *p, spinning, lockheld bool) {
 		
         // pp == nil 尝试获取空闲p
         pp, _ = pidleget(0)
-        // 没有空闲p,返回
+        // 没有空闲p,唤醒（创建）m失败，直接返回
         if pp == nil {
 			
             // ...
@@ -397,7 +397,7 @@ func newm(fn func(), pp *p, id int64) {
     if gp := getg(); gp != nil && gp.m != nil && (gp.m.lockedExt != 0 || gp.m.incgo) && GOOS != "plan9" {
         // ...
     }
-    // 关联真正的分配os thread
+    // 关联真正的 os thread
     // 分配一个系统线程，且完成 g0上的栈分配
     // 传入 mstart 函数，让线程执行 mstart
     newm1(mp)
@@ -406,6 +406,8 @@ func newm(fn func(), pp *p, id int64) {
 ~~~
 
 allocm函数
+
+创建一个新的m
 
 /src/runtime/proc.go:1889
 
