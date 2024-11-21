@@ -1766,7 +1766,7 @@ func bgsweep(c chan int) {
 
 sweepone函数
 
-sweepone方法每次清扫一个协程，清扫逻辑核心位于sweepLocked.sweep方法中，正是将mspan的gcmarkBits赋给allocBits，并创建出一个空白的bitmap作为新的gcmarkBits
+sweepone方法每次清扫一个mspan，清扫逻辑核心位于sweepLocked.sweep方法中，正是将mspan的gcmarkBits赋给allocBits，并创建出一个空白的bitmap作为新的gcmarkBits
 
 ~~~go
 // src/runtime/mgcsweep.go:356
