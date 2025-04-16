@@ -39,3 +39,17 @@ git tag
 # 匹配tag
 git tag -l "v1.*"
 ~~~
+
+## rm
+
+- 文件从暂存区域移除
+
+文件从暂存区域移除，但仍然希望保留在当前工作目录中。例如：我忘记添加`.gitignore`，把某些不想的提交的文件推送到了仓库（如`.idea`），此时就需要把对应文件或文件夹从暂存区移除，再提交到远程仓库。
+
+~~~bash
+# git rm --cached file_path
+# 若是文件夹则需要使用 -r 递归删除
+git rm -r --cached .idea/
+git commit -m "xxxx"
+git push
+~~~
