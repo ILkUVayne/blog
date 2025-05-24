@@ -48,6 +48,10 @@ make clean
 > 如果需要编译安装其他扩展需查看官方配置选项，核心配置选项列表 https://www.php.net/manual/zh/configure.about.php
 
 ~~~shell
+# 不同的版本可能使用的配置命令不一样
+# 在php-src根目录执行 ./configure --help 命令可以查看所有的配置信息进行更改
+# 例如：我想要查询gmp扩展怎么配置，使用 ./configure --help | grep gmp
+
 ./configure \
   --prefix=/usr/local/php/7.3 \
   --with-config-file-path=/etc/php/7.3 \
@@ -64,7 +68,9 @@ make clean
   --enable-mbstring \
   --enable-sockets
   
-  make -j4
+  # sudo make -j4 && sudo make install 两条也可以命令一起执行
+  
+  sudo make -j4
   
   sudo make install
 ~~~
@@ -86,6 +92,53 @@ sudo visudo
 Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/usr/local/php/bin"
 ...
 ~~~
+
+### 新增扩展
+
+为已有的php编译安装其他扩展,有两种情况
+
+- php官方集成的扩展，但是在编译php时没有启用这个扩展
+
+这里以gd库为例：
+
+编译安装
+
+~~~shell
+# 1. 进入php源码的扩展目录
+cd php-src/ext/gd
+
+# 生成 config.m4（部分版本需要手动拷贝配置文件,如果已存在，跳过这一步）
+cp config0.m4 config.m4
+
+# 生成编译文件
+# 如果提示phpize命令不存在，可以使用绝对地址执行命令 /usr/local/php/bin/phpize
+# 或者将 export PATH=/usr/local/php/bin/phpize:$PATH 添加到 /etc/profile 或者 ~/.zshrc
+phpize
+
+# 配置编译参数
+./configure --with-php-config=$(which php-config)
+
+# 编译安装
+sudo make && sudo make install
+~~~
+
+启用扩展
+
+~~~shell
+# 在 /etc/php/{php version}/conf.d 创建扩展配置启用
+cd /erc/php/8.2/conf.d
+sudo vim 82-gd.ini
+~~~
+
+添加如下配置：
+
+~~~
+extension=gd.so
+~~~
+
+- php官方尚未集成的扩展
+
+手动下载扩展包或者git clone扩展源码进行安装，然后具体的编译安装过程同上
 
 ## 多版本切换
 
